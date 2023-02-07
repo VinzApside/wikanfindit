@@ -1,0 +1,7 @@
+{
+  "name": "wikan-find-it",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
