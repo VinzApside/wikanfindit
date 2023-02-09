@@ -20,6 +20,7 @@ export class SearchWikiData {
   constructor(data: WikiSearchData) {
     this._title = data.parse.title;
     this._text = data.parse.text['*'];
+    this.getAllWords();
   }
 
   get wikiTitle(): string {
@@ -47,14 +48,31 @@ export class SearchWikiData {
   }
 
   removeWord() {
-    const text = this._text;
+    this.removeTag();
+    this._clearedText = this._text;
     this._clearedText = this._clearedText.replace(
       />[\w,\d,\s,\.,\;,\(,\)]+</gim,
-      '>REPLACE<'
+      '>...<'
     );
     this._clearedText = this._clearedText.replace(
       />"[\w,\d,\s,\.,\;,\(,\)]+"</gim,
-      '>REPLACE2<'
+      '>...<'
     );
+  }
+
+  getAllWords() {
+    let removetags = this._text
+      .replace(/(\r\n|\n|\r)/gm, '')
+      .replace('\\[|\\]', '')
+      .replace('\\(|\\)', '')
+      .replace(/<(.|\n)*?>/gim, ' ')
+      .replace(/<\/(.|\n)*?>/gim, ' ')
+      .replace(/&(.|\n)*?;/g, ' ')
+      .replace(/\[(.|\n)*?\[/g, '')
+      .replace(/[\.|\,|\\|\;| \(| \)| \\n| \"| \']+/, '');
+
+    let wordsArray = removetags.split(' ');
+    wordsArray = [...new Set(wordsArray)];
+    console.log('+++++', wordsArray);
   }
 }
