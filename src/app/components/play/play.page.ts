@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 import { filter, map, Observable, tap } from 'rxjs';
 import { WikiPopularResult } from 'src/app/models/wiki-data-popular.model';
 import { RandomWikiData, WikiDataRandom } from 'src/app/models/wiki-data-random.model';
@@ -17,11 +18,25 @@ export class PlayPage implements OnInit {
   wikiText!: string | undefined;
   wikiTitle!: string | undefined;
 
-  constructor(private wikiDataService: WikiDataService) {}
-  ngOnInit(): void {
+  constructor(
+    private wikiDataService: WikiDataService,
+    private loadingCtrl: LoadingController
+  ) {}
+  loading!: any;
+
+  async ngOnInit(): Promise<void> {
     this.initObservables();
     this.wikiDataService.getRandomWikiDatasFromAPI();
     this.wikiDataService.getPopularWikiSearchFromAPI();
+    this.loading = await this.loadingCtrl.create({
+      message: 'Loading...',
+      duration: 3000,
+      spinner: 'circles',
+    });
+  }
+
+  async showLoading() {
+    this.loading.present();
   }
 
   private initObservables() {

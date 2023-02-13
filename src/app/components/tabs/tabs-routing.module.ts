@@ -27,14 +27,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/play',
+        redirectTo: '/register',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/play',
+    redirectTo: '/register',
     pathMatch: 'full',
   },
 ];

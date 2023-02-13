@@ -12,11 +12,54 @@
   </ion-header>
 
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>LOG IN/SIGN IN</ion-card-title>
-      <ion-card-subtitle>Register here</ion-card-subtitle>
-    </ion-card-header>
+    <ion-card-content [formGroup]="user">
+      <ion-input
+        label="email"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Enter your email"
+        type="email"
+        formControlName="email"
+      ></ion-input>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.email">
+          <div
+            class="error-message"
+            *ngIf="user.get('email')?.hasError(validation.type) && (user.get('email')?.dirty || user.get('email')?.touched)"
+          >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
 
-    <ion-card-content> TO DO </ion-card-content>
+      <br />
+
+      <ion-input
+        label="password"
+        label-placement="floating"
+        fill="solid"
+        placeholder="Enter your password"
+        type="text"
+        formControlName="password"
+      ></ion-input>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.password">
+          <div
+            class="error-message"
+            *ngIf="user.get('password')?.hasError(validation.type) && (user.get('password')?.dirty || user.get('password')?.touched)"
+          >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-button
+        color="primary"
+        (click)="showLoading()"
+        [disabled]="user.status!=='VALID'"
+        >Valider</ion-button
+      >
+    </ion-card-content>
   </ion-card>
 </ion-content>
