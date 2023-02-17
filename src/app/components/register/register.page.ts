@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-register',
@@ -36,9 +37,15 @@ export class RegisterPage implements OnInit {
     ],
   };
 
-  constructor(private loadingCtrl: LoadingController, private route: Router) {}
+  constructor(
+    private loadingCtrl: LoadingController,
+    private route: Router,
+    private storage: Storage
+  ) {
+    this.storage.create();
+  }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.user = new FormGroup({
       password: new FormControl(null, {
         validators: [
@@ -57,13 +64,17 @@ export class RegisterPage implements OnInit {
         updateOn: 'change',
       }),
     });
+
+    const storedValue = await this.storage['get']('storedValue');
+    console.log({ storedValue });
   }
 
   async showLoading() {
+    this.storage['set']('storedValue', 'coucou toi');
     const loading = await this.loadingCtrl.create({
       message: 'Loading...',
       duration: 3000,
-      spinner: 'dots',
+      spinner: 'circles',
     });
 
     loading.present();
